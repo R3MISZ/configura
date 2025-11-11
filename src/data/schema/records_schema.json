@@ -1,0 +1,36 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer"
+        },
+        "ts": {
+            "type": "string"
+        },
+        "type": {
+            "type": "string"
+        },
+        "payload": {
+            "type": "object",
+            "properties": {
+                "temp_c": {
+                    "type": "number"
+                },
+                "status": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "status",
+                "temp_c"
+            ]
+        }
+    },
+    "required": [
+        "id",
+        "payload",
+        "ts",
+        "type"
+    ]
+}
