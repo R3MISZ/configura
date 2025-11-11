@@ -1,0 +1,56 @@
+# Default (only definitions)
+defaults:
+  runtime: &default_runtime
+    type: "configura.engine:set_runtime"
+    params:
+      #mode: "stream" | "batch"
+      mode: "stream"
+      chunk_size: 1000
+
+  validation: &default_validation
+    type: "configura.adapters.json:JsonAdapter"
+    params:
+      #on_fail: "skip" | "fail" | "dlq"
+      on_fail: "dlq"
+      dlq_path: "./data/dlq/invalid.jsonl"
+      schema_file: "./data/schema/records_schema.json"
+
+  input_source: &default_input
+    type: "configura.adapters.json:JsonAdapter"
+    params:
+      input_path: "./data/input/records.jsonl"
+
+  output_sinks: &default_output
+    type: "configura.adapters.json:JsonAdapter"
+    params:
+      output_path: "./data/output/normalized.jsonl"
+
+runtime: *default_runtime
+input: *default_input
+validation: *default_validation
+output: *default_output
+
+pipeline:
+  steps:
+    - type: "configura.plugins.filter:Filter"
+      params:
+        predicate: 'record["type"] in ["sensor_reading","telemetry"]'
+
+    - type: "configura.plugins.map_fields:MapFields"
+      params:
+        rename:
+          "payload.temp_c": "payload.temperature_c"
+        drop:
+          - "payload.status"
+        const:
+          "source": "edge-01"
+
+    - type: "configura.plugins.derive:Derive"
+      params:
+        expressions:
+          "payload.temperature_f": "record['payload']['temperature_c'] * 9/5 + 32"
+
+    - type: "configura.plugins.dedupe:Deduplicate"
+      params:
+        key: "id"
+        keep: "last"

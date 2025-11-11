@@ -1,0 +1,2 @@
+{"record": {"i": 2, "s": "2025-11-01T12:05:00Z", "tpe": "telemetry", "paylad": {"tmp_c": 19.0, "staus": "ok"}}, "errors": ["'id' is a required property", "'payload' is a required property", "'ts' is a required property", "'type' is a required property"]}
+{"record": {"id": 3, "ts": "2025-11-01T12:05:30Z", "typ": "telemetry", "payload": {"tep_c": 19.1, "staus": "ok"}}, "errors": ["'status' is a required property", "'temp_c' is a required property", "'type' is a required property"]}
