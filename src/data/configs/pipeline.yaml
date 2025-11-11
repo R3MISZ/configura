@@ -1,0 +1,31 @@
+# Default (only definitions)
+defaults:
+  runtime: &default_runtime
+    type: "configura.engine:set_runtime"
+    params:
+      #mode: "stream" | "batch"
+      mode: "stream"
+      chunk_size: 1000
+
+  validation: &default_validation
+    type: "configura.adapters.json:JsonAdapter"
+    params:
+      #on_fail: "skip" | "fail" | "dlq"
+      on_fail: "dlq"
+      dlq_path: "./data/dlq/invalid.jsonl"
+      schema_file: "./data/schema/events_schema.json"
+
+  input_source: &default_input
+    type: "configura.adapters.json:JsonAdapter"
+    params:
+      input_path: "./data/input/events.jsonl"
+
+  output_sinks: &default_output
+    type: "configura.adapters.json:JsonAdapter"
+    params:
+      output_path: "./data/output/normalized.jsonl"
+
+runtime: *default_runtime
+input: *default_input
+validation: *default_validation
+output: *default_output
