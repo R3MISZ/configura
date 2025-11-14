@@ -18,19 +18,19 @@ def load_class(type_string: str) -> type:
 
     # Split once to avoid unpack errors when ':' appears more than once
     try:
-        module_path, attr = (part.strip() for part in type_string.split(":", 1))
+        module_path, class_name = (part.strip() for part in type_string.split(":", 1))
     except ValueError as exc:
         raise ValueError(f"Invalid type string '{type_string}'. Expected '<module>:<ClassName>'") from exc
 
-    if not module_path or not attr:
+    if not module_path or not class_name:
         raise ValueError(f"Invalid type string '{type_string}'. Expected '<module>:<ClassName>'")
 
     module = importlib.import_module(module_path)
 
     try:
-        dynamic_class = getattr(module, attr)
+        dynamic_class = getattr(module, class_name)
     except AttributeError as exc:
-        raise AttributeError(f"Module '{module_path}' does not define '{attr}'") from exc
+        raise AttributeError(f"Module '{module_path}' does not define '{class_name}'") from exc
 
     if not inspect.isclass(dynamic_class):
         raise TypeError(f"'{type_string}' does not refer to a class")

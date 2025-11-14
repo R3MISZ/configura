@@ -5,7 +5,6 @@ from configura.constants import *
 class Validate:
     def __init__(
         self,
-        data: TYPE_DATA,
         schema_path: str,
         schema_encoding: str = DEFAULT_ENCODING,
         on_fail: TYPE_ON_FAIL = "skip",
@@ -13,7 +12,6 @@ class Validate:
         dlq_format: TYPE_DLQ_FORMAT = "json",
         dlq_encoding: str = DEFAULT_ENCODING
     ) -> None:
-        self.data = data
         self.schema_path = schema_path
         self.schema_encoding = schema_encoding
         self.on_fail: TYPE_ON_FAIL= on_fail

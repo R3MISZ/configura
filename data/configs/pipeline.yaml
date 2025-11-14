@@ -1,29 +1,29 @@
-# Default (only definitions)
+# Default - only definitions
 defaults:
   runtime: &default_runtime
-    type: "configura.engine:set_runtime"
+    type: "configura.plugins.set_runtime:SetRuntime"
     params:
       #mode: "stream" | "batch"
       mode: "stream"
       chunk_size: 1000
 
   validation: &default_validation
-    type: "configura.adapters.json:JsonAdapter"
+    type: "configura.plugins.validate:Validate"
     params:
       #on_fail: "skip" | "fail" | "dlq"
       on_fail: "dlq"
       dlq_path: "./data/dlq/invalid.jsonl"
-      schema_file: "./data/schema/records_schema.json"
+      schema_path: "./data/schema/records_schema.json"
 
   input_source: &default_input
-    type: "configura.adapters.json:JsonAdapter"
+    type: "configura.adapters.jsonl_adapter:ReadJsonl"
     params:
-      input_path: "./data/input/records.jsonl"
+      path: "./data/input/records.jsonl"
 
   output_sinks: &default_output
-    type: "configura.adapters.json:JsonAdapter"
+    type: "configura.adapters.json_adapter:WriteJson"
     params:
-      output_path: "./data/output/normalized.jsonl"
+      path: "./data/output/normalized.jsonl"
 
 runtime: *default_runtime
 input: *default_input
