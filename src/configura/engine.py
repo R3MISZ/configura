@@ -1,5 +1,5 @@
-from typing import Dict, Any
-from configura.dynlib import DynamicLib
+from typing import Any
+from configura.dynamic_lib import process_class
 
 RUNTIME_MODE = "default"
 RUNTIME_CHUNK_SIZE = 0
@@ -9,7 +9,7 @@ def set_runtime(mode=RUNTIME_MODE, chunk_size=RUNTIME_CHUNK_SIZE):
     RUNTIME_MODE = mode
     RUNTIME_CHUNK_SIZE = chunk_size
 
-def run_pipeline(yaml_cfg: Dict[str, Any]):
+def run_pipeline(yaml_cfg: dict[str, Any]):
     #TODO
     #import datetime
     #today = datetime.date.today().isoformat()
@@ -28,10 +28,10 @@ def run_pipeline(yaml_cfg: Dict[str, Any]):
         yaml_cfg.get("output", [])
     ]
 
-    data = None
+    data = []
 
     for step in list_steps:
         print(f"step: {step}")
-        data = DynamicLib.run_step(step, data)
+        data = process_class(step, data)
         print(f"data: {data}")
         print("-")
