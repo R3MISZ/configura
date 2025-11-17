@@ -1,11 +1,25 @@
 import os
 import csv
 import json
+import yaml
 
+from pathlib import Path
 from jsonschema import Draft7Validator
 from jsonschema.exceptions import ValidationError
 
 from configura.constants import *
+from typing import Optional, Any
+#region YAML
+def read_yaml(
+    path: str,
+    encoding: str = DEFAULT_ENCODING
+) -> Any:
+    if not Path(path).exists():
+        raise FileNotFoundError(f"YAML config not found: {path}")
+    
+    with open(path, mode="r", encoding=encoding) as f:
+        return yaml.load(f, Loader=yaml.FullLoader)
+#endregion
 
 #region CSV
 def read_csv(
