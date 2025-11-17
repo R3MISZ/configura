@@ -1,0 +1,110 @@
+[
+  {
+    "record": {
+      "id": 8,
+      "s": "2025-11-01T12:07:52Z",
+      "type": "sensor_reading",
+      "password": "secret8",
+      "debug": false,
+      "internal_id": "A-08",
+      "temp_flag": true,
+      "payload": {
+        "temp_c": 18.6,
+        "status": "ok"
+      }
+    },
+    "errors": [
+      "'ts' is a required property"
+    ]
+  },
+  {
+    "record": {
+      "id": 10,
+      "ts": "2025-11-01T12:07:30Z",
+      "tpe": "sensor_reading",
+      "password": "secret10",
+      "debug": false,
+      "internal_id": "A-010",
+      "temp_flag": false,
+      "payload": {
+        "temp_c": 18.1,
+        "status": "ok"
+      }
+    },
+    "errors": [
+      "'type' is a required property"
+    ]
+  },
+  {
+    "record": {
+      "id": 12,
+      "ts": "2025-11-01T12:13:24Z",
+      "type": "telemetry",
+      "password": "secret12",
+      "debug": true,
+      "internal_id": "A-012",
+      "temp_flag": true,
+      "payoad": {
+        "temp_c": 18.7,
+        "status": "warning"
+      }
+    },
+    "errors": [
+      "'payload' is a required property"
+    ]
+  },
+  {
+    "record": {
+      "id": 15,
+      "ts": "2025-11-01T12:13:15Z",
+      "type": "sensor_reading",
+      "password": "secret15",
+      "debug": true,
+      "internal_id": "A-015",
+      "temp_flag": false,
+      "payload": {
+        "temp_c": 18.2,
+        "tatus": "warning"
+      }
+    },
+    "errors": [
+      "'status' is a required property"
+    ]
+  },
+  {
+    "record": {
+      "id": 18,
+      "ts": "2025-11-01T12:26:24Z",
+      "type": "telemetry",
+      "password": "secret18",
+      "dbug": true,
+      "internl_id": "A-018",
+      "temp_flag": true,
+      "paload": {
+        "temp_c": 21.1,
+        "sttus": "warning"
+      }
+    },
+    "errors": [
+      "'payload' is a required property"
+    ]
+  },
+  {
+    "record": {
+      "id": 19,
+      "ts": "2025-11-01T12:27:33Z",
+      "type": "sensor_reading",
+      "password": "secret19",
+      "debug": true,
+      "internal_id": "A-019",
+      "temp_flag": true,
+      "payload": {
+        "tem_c": 19.2,
+        "status": "ok"
+      }
+    },
+    "errors": [
+      "'temp_c' is a required property"
+    ]
+  }
+]
