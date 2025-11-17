@@ -1,3 +1,20 @@
-{"id": 1, "ts": "2025-11-01T12:00:00Z", "type": "sensor_reading", "payload": {"temp_c": 21.5, "status": "ok"}}
-{"id": 2, "ts": "2025-11-01T12:05:00Z", "type": "telemetry", "payload": {"temp_c": 19.0, "status": "ok"}}
-{"id": 3, "ts": "2025-11-01T12:05:30Z", "type": "telemetry", "payload": {"temp_c": 19.1, "status": "ok"}}
+{"id": 1, "ts": "2025-11-01T12:01:12Z", "type": "sensor_reading", "password": "secret1", "debug": true, "internal_id": "A-001", "temp_flag": true, "payload": {"temp_c": 18.4, "status": "ok"}}
+{"id": 2, "ts": "2025-11-01T12:00:32Z", "type": "sensor_reading", "password": "secret2", "debug": true, "internal_id": "A-002", "temp_flag": true, "payload": {"temp_c": 22.0, "status": "ok"}}
+{"id": 3, "ts": "2025-11-01T12:03:57Z", "type": "telemetry", "password": "secret3", "debug": true, "internal_id": "A-003", "temp_flag": false, "payload": {"temp_c": 20.7, "status": "warning"}}
+{"id": 4, "ts": "2025-11-01T12:04:48Z", "type": "sensor_reading", "password": "secret4", "debug": true, "internal_id": "A-004", "temp_flag": true, "payload": {"temp_c": 21.7, "status": "warning"}}
+{"id": 5, "ts": "2025-11-01T12:07:20Z", "type": "sensor_reading", "password": "secret5", "debug": true, "internal_id": "A-005", "temp_flag": true, "payload": {"temp_c": 22.5, "status": "warning"}}
+{"id": 6, "ts": "2025-11-01T12:07:42Z", "type": "sensor_reading", "password": "secret6", "debug": true, "internal_id": "A-006", "temp_flag": false, "payload": {"temp_c": 19.3, "status": "ok"}}
+{"id": 7, "ts": "2025-11-01T12:04:40Z", "type": "sensor_reading", "password": "secret7", "debug": false, "internal_id": "A-007", "temp_flag": true, "payload": {"temp_c": 19.5, "status": "warning"}}
+{"id": 8, "ts": "2025-11-01T12:07:52Z", "type": "sensor_reading", "password": "secret8", "debug": false, "internal_id": "A-008", "temp_flag": true, "payload": {"temp_c": 18.6, "status": "ok"}}
+{"id": 9, "ts": "2025-11-01T12:04:12Z", "type": "sensor_reading", "password": "secret9", "debug": true, "internal_id": "A-009", "temp_flag": false, "payload": {"temp_c": 20.1, "status": "warning"}}
+{"id": 10, "ts": "2025-11-01T12:07:30Z", "type": "sensor_reading", "password": "secret10", "debug": false, "internal_id": "A-010", "temp_flag": false, "payload": {"temp_c": 18.1, "status": "ok"}}
+{"id": 11, "ts": "2025-11-01T12:05:08Z", "type": "telemetry", "password": "secret11", "debug": true, "internal_id": "A-011", "temp_flag": true, "payload": {"temp_c": 19.9, "status": "ok"}}
+{"id": 12, "ts": "2025-11-01T12:13:24Z", "type": "telemetry", "password": "secret12", "debug": true, "internal_id": "A-012", "temp_flag": true, "payload": {"temp_c": 18.7, "status": "warning"}}
+{"id": 13, "ts": "2025-11-01T12:11:42Z", "type": "telemetry", "password": "secret13", "debug": false, "internal_id": "A-013", "temp_flag": true, "payload": {"temp_c": 22.3, "status": "warning"}}
+{"id": 14, "ts": "2025-11-01T12:14:42Z", "type": "telemetry", "password": "secret14", "debug": false, "internal_id": "A-014", "temp_flag": false, "payload": {"temp_c": 18.8, "status": "warning"}}
+{"id": 15, "ts": "2025-11-01T12:13:15Z", "type": "sensor_reading", "password": "secret15", "debug": true, "internal_id": "A-015", "temp_flag": false, "payload": {"temp_c": 18.2, "status": "warning"}}
+{"id": 16, "ts": "2025-11-01T12:23:44Z", "type": "sensor_reading", "password": "secret16", "debug": true, "internal_id": "A-016", "temp_flag": true, "payload": {"temp_c": 21.9, "status": "warning"}}
+{"id": 17, "ts": "2025-11-01T12:13:19Z", "type": "telemetry", "password": "secret17", "debug": true, "internal_id": "A-017", "temp_flag": false, "payload": {"temp_c": 19.4, "status": "ok"}}
+{"id": 18, "ts": "2025-11-01T12:26:24Z", "type": "telemetry", "password": "secret18", "debug": true, "internal_id": "A-018", "temp_flag": true, "payload": {"temp_c": 21.1, "status": "warning"}}
+{"id": 19, "ts": "2025-11-01T12:27:33Z", "type": "sensor_reading", "password": "secret19", "debug": true, "internal_id": "A-019", "temp_flag": true, "payload": {"temp_c": 19.2, "status": "ok"}}
+{"id": 20, "ts": "2025-11-01T12:18:20Z", "type": "sensor_reading", "password": "secret20", "debug": true, "internal_id": "A-020", "temp_flag": true, "payload": {"temp_c": 18.2, "status": "ok"}}
