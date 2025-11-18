@@ -1,52 +1,78 @@
-from configura.io import validate
-from configura.constants import *
+from jsonschema import Draft7Validator
+from jsonschema.exceptions import ValidationError
+
+
+from configura.constants import TYPE_DATA, DEFAULT_ENCODING, TYPE_ON_FAIL
+from configura.io import read_json, write_jsonl
 
 class Validate:
     def __init__(
         self,
         schema_path: str,
-        *,
         schema_encoding: str = DEFAULT_ENCODING,
+
         on_fail: TYPE_ON_FAIL = "skip",
 
-        #DLQ ITEMS
-        path: str | None = None,
-        format: TYPE_DLQ_FORMAT = "json",
-        encoding: str = DEFAULT_ENCODING,
-
-        use_input_name: bool = True,
-        add_timestamp: bool = False,
-
-        base_dir: str = "data/dlq",
-        suffix: str = "_dlq",
-
+        dlq_dir: str = "",
+        dlq_name: str = DEFAULT_ENCODING,
     ) -> None:
         self.schema_path = schema_path
         self.schema_encoding = schema_encoding
+
         self.on_fail: TYPE_ON_FAIL= on_fail
 
-        self.dlq_path = path
-        self.dlq_format: TYPE_DLQ_FORMAT = format
-        self.dlq_encoding = encoding
-
-        self.dlq_use_input_name = use_input_name
-        self.dlq_add_timestamp = add_timestamp
-
-        self.dlq_base_dir = base_dir
-        self.dlq_suffix = suffix
+        self.dlq_dir = dlq_dir
+        self.dlq_name = dlq_name
 
     def process(self, data):
-        return validate(
+        return self.validate(
             data,
             self.schema_path,
             schema_encoding=self.schema_encoding,
+
             on_fail=self.on_fail,
 
-            dlq_path=self.dlq_path,
-            dlq_format=self.dlq_format,
-            dlq_encoding=self.dlq_encoding,
-
-            dlq_file_name=self.dlq_use_input_name,
-            dlq_add_timestamp=self.dlq_add_timestamp,
-            dlq_suffix=self.dlq_suffix
+            dlq_dir=self.dlq_dir,
+            dlq_name=self.dlq_name
         )
+    
+    @staticmethod
+    def validate(
+        data: TYPE_DATA,
+        schema_path: str,
+        schema_encoding: str = DEFAULT_ENCODING,
+
+        on_fail: TYPE_ON_FAIL = "skip",
+
+        dlq_dir: str = "data/dlq/",
+        dlq_name: str = "dlq_output",
+    ) -> TYPE_DATA:
+        
+        schema = read_json(path=schema_path, encoding=schema_encoding)
+        validator = Draft7Validator(schema)
+
+        good, bad = [], []
+
+        for item in data:
+            errors : list[ValidationError] = list(validator.iter_errors(item))
+            if errors:
+                bad.append({
+                    "record": item,
+                    "errors": [error.message for error in errors]
+                })
+            else:
+                good.append(item)
+
+        if not bad:
+            return good
+
+        # Fail diagnosis
+        if on_fail == "fail":
+            raise ValueError(f"{len(bad)} records failed validation")
+        elif on_fail == "skip":
+            return good
+        elif on_fail == "dlq":
+            write_jsonl(data=bad, path=f"{dlq_dir}{dlq_name}.jsonl")
+            return good
+        else:
+            raise ValueError(f"Unknown on_fail mode: {on_fail}")
