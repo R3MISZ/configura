@@ -1,7 +1,6 @@
 from jsonschema import Draft7Validator
 from jsonschema.exceptions import ValidationError
 
-
 from configura.constants import TYPE_DATA, DEFAULT_ENCODING, TYPE_ON_FAIL
 from configura.io import read_json, write_jsonl
 

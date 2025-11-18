@@ -6,12 +6,10 @@ from configura.constants import *
 
 def load_class(type_string: str) -> type:
     """
-    Load a class based on a type_string
-
-    Example type_string: 'configura.plugins.builtin.transform_upper:TransformUpper'
-    
+    Example:
+    - type_string: 'configura.plugins.builtin.transform_upper:TransformUpper'
     - module_path: 'configura.plugins.builtin.transform_upper'
-    - attr: 'TransformUpper'
+    - class_name: 'TransformUpper'
     """
     if not type_string:
         raise ValueError("No type string provided (step['type'] is empty)")
@@ -58,4 +56,3 @@ def process_class(step: dict[str, Any], data: TYPE_DATA) -> TYPE_DATA:
 
     result = instance.process(data)
     return result
-    # return cast(TYPE_DATA, result)

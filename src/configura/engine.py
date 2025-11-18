@@ -1,15 +1,26 @@
-from pathlib import Path
-from typing import Union
-
-from configura.io import load_config
+from configura.io import read_yaml, read_json
 from configura.loader import process_class
 from configura.constants import *
+from pathlib import Path
 
-def run_pipeline_from_config(config_path: Union[str, Path], verbose: bool = False) -> None:
+def run_pipeline_from_config(config_path: Path, verbose: bool = False) -> None:
     # Convert to str if type(Path)
-    config_path_str = str(config_path)
 
-    config = load_config(config_path_str)
+    if not config_path.exists():
+        raise SystemExit(f"Config file not found: {config_path}")
+
+    if not config_path.is_file():
+        raise SystemExit(f"Config path is not a file: {config_path}")
+
+    if config_path.suffix in (".yaml" or ".yml"):
+        config = read_yaml(str(config_path))
+    elif config_path.suffix == ".json":
+        config = read_json(str(config_path))
+    else:
+        raise SystemExit(
+            f"Unsupported config format '{config_path.suffix}'. "
+            f"Allowed: .yaml, .yml, .json"
+        )
 
     if not isinstance(config, dict):
         raise ValueError(f"Config root must be an object/dict, got: {type(config)}")
