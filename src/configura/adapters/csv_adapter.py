@@ -1,50 +1,42 @@
-from configura.io import read_csv, write_csv, derive_related_path
-from configura.constants import *
+from configura.adapters.base_adapter import ReadBase, WriteBase
+from configura.io import read_csv, write_csv
 
-class ReadCsv:
-    def __init__(self, path: str, delimiter: str = ",", encoding: str = DEFAULT_ENCODING) -> None:
-        self.path = path
-        self.delimiter = delimiter
-        self.encoding = encoding
+from configura.constants import DEFAULT_ENCODING
 
-    def process(self, data):
-        # ignore data
-        return read_csv(
-            path=self.path,
-            delimiter=self.delimiter,
-            encoding=self.encoding,
-        )
+DELIMITER = ","
 
-class WriteCsv:
+class ReadCsv(ReadBase):
     def __init__(
         self,
-        path: str | None = None,
-        delimiter: str = ",",
+        path: str,
         encoding: str = DEFAULT_ENCODING,
-        add_timestamp: bool = False,
-        base_dir: str = "data/output",
-        file_name: str = "clean",
+        delimiter: str = DELIMITER
     ) -> None:
-        self.path = path
+        super().__init__(path, encoding)
         self.delimiter = delimiter
-        self.encoding = encoding
-        self.add_timestamp = add_timestamp
-        self.base_dir = base_dir
-        self.file_name = file_name
 
-    def process(self, data: TYPE_DATA):
-        resolved_path = derive_related_path(
-            kind="output",
-            explicit_path=self.path,
-            add_timestamp=self.add_timestamp,
-            base_dir=self.base_dir,
-            file_name=self.file_name,
+    def process(self, data):
+        return read_csv(
+            path=self.path,
+            encoding=self.encoding,
+            delimiter=self.delimiter
         )
 
+class WriteCsv(WriteBase):
+    def __init__(
+        self,
+        path: str,
+        encoding: str = DEFAULT_ENCODING,
+        delimiter: str = DELIMITER
+    ) -> None:
+        super().__init__(path, encoding)
+        self.delimiter = delimiter
+
+    def process(self, data):
         write_csv(
-            path=resolved_path,
             data=data,
-            delimiter=self.delimiter,
+            path=self.path,
             encoding=self.encoding,
+            delimiter=self.delimiter
         )
         return data
