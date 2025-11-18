@@ -1,0 +1,66 @@
+pipeline:
+  - type: "configura.adapters.jsonl_adapter:ReadJsonl"
+    params:
+      path: "data/input/records_invalid_keys.jsonl"
+      # encoding: "utf-8"
+
+  # Variations -> on_fail: "skip" | "dlq" | "fail"
+  - type: "configura.plugins.validate:Validate"
+    params:
+      schema_path: "./data/schema/records_schema.json"
+      # encoding: "utf-8"
+      on_fail: "dlq"
+      dlq_dir: "data/dlq/"
+      dlq_name: "records_extended_dlq"
+      #dlq_encoding: "utf-8"
+
+    # Rename: ts -> time_stamp, type -> record_type
+  - type: "configura.plugins.rename_fields:RenameFields"
+    params:
+      mapping:
+        ts: time_stamp
+        payload.temp_c: payload.temp_celsius           
+
+  # Remove sensible and internal content
+  - type: "configura.plugins.drop_fields:DropFields"
+    params:
+      fields:
+        - password
+        - debug
+        - internal_id
+        - temp_flag
+
+  - type: "configura.plugins.filter_by_field:FilterByField"
+    params:
+      key_name: payload.temp_celsius
+      operator: ">="
+      value: 20
+      fail_on_type_error: true
+      # Raise error if failed
+
+  - type: "configura.plugins.limit:Limit"
+    params:
+      count: 5
+
+  # Alternative: Limit by index range (uncomment if needed)
+  # - type: "configura.plugins.limit:Limit"
+  #   params:
+  #     start: 50
+  #     end: 150
+
+  # Auto: use input filename + "_clean", same extension, no timestamp
+  - type: "configura.adapters.jsonl_adapter:WriteJsonl"
+    params:
+      path: "data/output/records_extended_output.jsonl"
+
+  # Explicit path (no derivation)
+  # - type: "configura.adapters.jsonl_adapter:WriteJsonl"
+  #   params:
+  #     path: "data/output/custom_name.jsonl"
+
+  # Optional: Write output also as CSV
+  # - type: "configura.adapters.csv_adapter:WriteCsv"
+  #   params:
+  #     path: "data/output/records_clean.csv"
+  #     encoding: "utf-8"
+  #     delimiter: ";"

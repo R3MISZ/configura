@@ -23,7 +23,7 @@ def generate_record(record_id: int, base_time: datetime) -> dict:
         },
     }
 
-def generate_jsonl(filename: str = "records.jsonl", count: int = 100) -> None:
+def generate_jsonl(filename: str = "generated_records.jsonl", count: int = 100) -> None:
     script_dir = Path(__file__).parent
     output_path = script_dir / filename
     base_time = datetime(2025, 11, 1, 12, 0, 0)

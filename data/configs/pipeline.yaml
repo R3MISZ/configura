@@ -1,80 +1,9 @@
-defaults:
-  # Default runtime configuration
-  runtime: &default_runtime
-    type: "configura.plugins.set_runtime:SetRuntime"
-    params:
-      mode: "stream" # "stream" | "batch"
-      chunk_size: 1000 # only in steam mode -> how many records per chunk
-
 pipeline:
-  steps:
-    - *default_runtime
+  - type: "configura.adapters.jsonl_adapter:ReadJsonl"
+    params: { path: "data/input/records.jsonl" }
 
-    - type: "configura.adapters.jsonl_adapter:ReadJsonl"
-      params:
-        path: "data/input/records_invalid_keys.jsonl"
-        encoding: "utf-8"
+  - type: "configura.plugins.filter_by_field:FilterByField"
+    params: { key_name: "value", operator: ">=", value: 20}
 
-    - type: "configura.plugins.validate:Validate"
-      params:
-        schema_path: "./data/schema/records_schema.json"
-        on_fail: "dlq" # "skip" | "fail" | "dlq"
-        #path: "./"
-        format: "json" # "json" | "jsonl" | "csv"
-        base_dir: "data/dlq"
-        suffix: "_dlq"
-        add_timestamp: true
-        use_input_name: true
-
-     # ts -> time_stamp, type -> record_type
-    - type: "configura.plugins.rename_fields:RenameFields"
-      params:
-        mapping:
-          ts: time_stamp
-          payload.temp_c: payload.temp_celsius           
-
-    # Remove sensible and internal content
-    - type: "configura.plugins.drop_fields:DropFields"
-      params:
-        fields:
-          - password
-          - debug
-          - internal_id
-          - temp_flag
-
-    - type: "configura.plugins.filter_by_field:FilterByField"
-      params:
-        key_name: payload.temp_celsius
-        operator: ">="
-        value: 20
-        fail_on_type_error: true
-        # Raise error if failed
-
-    - type: "configura.plugins.limit:Limit"
-      params:
-        count: 5
-
-    # Alternative: Limit by index range (uncomment if needed)
-    # - type: "configura.plugins.limit:Limit"
-    #   params:
-    #     start: 50
-    #     end: 150
-
-    # Auto: use input filename + "_clean", same extension, no timestamp
-    - type: "configura.adapters.jsonl_adapter:WriteJsonl"
-      params:
-        base_dir: "data/output"
-        suffix: "_clean"
-        add_timestamp: true
-
-    # Explicit path (no derivation)
-    # - type: "configura.adapters.jsonl_adapter:WriteJsonl"
-    #   params:
-    #     path: "data/output/custom_name.jsonl"
-
-    # Optional: Write output also as CSV
-    # - type: "configura.adapters.csv_adapter:WriteCsv"
-    #   params:
-    #     path: "data/output/records_clean.csv"
-    #     delimiter: ";"
-    #     encoding: "utf-8"
+  - type: "configura.adapters.jsonl_adapter:WriteJsonl"
+    params: { path: "data/output/records_output.jsonl" }

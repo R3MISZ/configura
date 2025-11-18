@@ -1,0 +1,5 @@
+{"id": 2, "type": "sensor_reading", "payload": {"status": "ok", "temp_celsius": 22.0}, "time_stamp": "2025-11-01T12:00:32Z"}
+{"id": 3, "type": "telemetry", "payload": {"status": "warning", "temp_celsius": 20.7}, "time_stamp": "2025-11-01T12:03:57Z"}
+{"id": 4, "type": "sensor_reading", "payload": {"status": "warning", "temp_celsius": 21.7}, "time_stamp": "2025-11-01T12:04:48Z"}
+{"id": 5, "type": "sensor_reading", "pssword": "secret5", "payload": {"status": "warning", "temp_celsius": 22.5}, "time_stamp": "2025-11-01T12:07:20Z"}
+{"id": 9, "type": "sensor_reading", "temp_lag": false, "payload": {"status": "warning", "temp_celsius": 20.1}, "time_stamp": "2025-11-01T12:04:12Z"}
