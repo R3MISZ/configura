@@ -1,4 +1,4 @@
-from configura.io import read_csv, write_csv, set_runtime_input, derive_related_path
+from configura.io import read_csv, write_csv, derive_related_path
 from configura.constants import *
 
 class ReadCsv:
@@ -9,8 +9,6 @@ class ReadCsv:
 
     def process(self, data):
         # ignore data
-        set_runtime_input(self.path)
-
         return read_csv(
             path=self.path,
             delimiter=self.delimiter,
@@ -23,27 +21,24 @@ class WriteCsv:
         path: str | None = None,
         delimiter: str = ",",
         encoding: str = DEFAULT_ENCODING,
-        use_input_name: bool = True,
         add_timestamp: bool = False,
         base_dir: str = "data/output",
-        suffix: str = "_clean",
+        file_name: str = "clean",
     ) -> None:
         self.path = path
         self.delimiter = delimiter
         self.encoding = encoding
-        self.use_input_name = use_input_name
         self.add_timestamp = add_timestamp
         self.base_dir = base_dir
-        self.suffix = suffix
+        self.file_name = file_name
 
     def process(self, data: TYPE_DATA):
         resolved_path = derive_related_path(
             kind="output",
-            base_dir="data/output",
-            explicit_path=self.path or None,
-            use_input_name=True,
-            add_timestamp=True,
-            suffix="_output",
+            explicit_path=self.path,
+            add_timestamp=self.add_timestamp,
+            base_dir=self.base_dir,
+            file_name=self.file_name,
         )
 
         write_csv(

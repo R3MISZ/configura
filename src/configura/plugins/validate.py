@@ -46,7 +46,7 @@ class Validate:
             dlq_format=self.dlq_format,
             dlq_encoding=self.dlq_encoding,
 
-            dlq_use_input_name=self.dlq_use_input_name,
+            dlq_file_name=self.dlq_use_input_name,
             dlq_add_timestamp=self.dlq_add_timestamp,
             dlq_suffix=self.dlq_suffix
         )

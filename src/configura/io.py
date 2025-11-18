@@ -9,7 +9,6 @@ from jsonschema import Draft7Validator
 from jsonschema.exceptions import ValidationError
 
 from configura.constants import *
-from configura.engine import runtime
 
 from typing import Optional, Any
 
@@ -92,11 +91,9 @@ def validate(
     dlq_format: TYPE_DLQ_FORMAT = "json",
     dlq_encoding: str = DEFAULT_ENCODING,
 
-    dlq_use_input_name: bool = True,
     dlq_add_timestamp: bool = False,
-
     dlq_base_dir: str = "data/dlq",
-    dlq_suffix: str = "_dlq",
+    dlq_file_name: str = "dlq",
 ) -> TYPE_DATA:
     schema = read_json(schema_path, encoding=schema_encoding)
     validator = Draft7Validator(schema)
@@ -124,11 +121,10 @@ def validate(
     elif on_fail == "dlq":
         resolved_path = derive_related_path(
             kind="dlq",
-            base_dir=dlq_base_dir,
             explicit_path=dlq_path,
-            use_input_name=dlq_use_input_name,
             add_timestamp=dlq_add_timestamp,
-            suffix=dlq_suffix
+            base_dir=dlq_base_dir,
+            file_name=dlq_file_name,
         )
 
         _write_dlq(bad, resolved_path, dlq_format, dlq_encoding)
@@ -155,54 +151,36 @@ def _write_dlq(
         write_csv(dlq_path, bad, encoding=dlq_encoding)
     else:
         raise ValueError(f"Unsupported dlq_format: {dlq_format}")
-    
-def set_runtime_input(str_path: str):
-    path = Path(str_path)
-    runtime.input_path = str(path)
-    runtime.input_basename = path.stem    # "records"
-    runtime.input_extension = path.suffix # ".jsonl"
-    print(
-        "RUNTIME - INPUT",
-        str(path),
-        str(path.stem),
-        str(path.suffix)
-    )
 
 def derive_related_path(
     kind: Literal["output", "dlq"],
     base_dir: str,
     *,
     explicit_path: Optional[str] = None,
-    use_input_name: bool = True,
     add_timestamp: bool = True,
-    suffix: str = "",
+    file_name: str = "",
 ) -> str:
     """
-    Build a derived path for output or DLQ based on:
-      - explicit_path (if provided, that always wins)
-      - runtime.input_* (if available)
-      - base_dir + optional timestamp + suffix
+    Build a derived path with this priority:
+
+    1. explicit_path (always wins)
+    2. fallback name: <kind>
+    3. optional file_name + timestamp
     """
-    # 1. If user provided an explicit path, use it as-is
+    # 1. explicit wins
     if explicit_path:
         return explicit_path
 
-    # 2. If we have no input info → fallback to generic name
-    if not use_input_name or runtime.input_basename is None:
-        # last-resort fallback name
-        name = f"{kind}"
-    else:
-        name = runtime.input_basename
+    # 2. fallback name
+    output_name = kind
 
-    if suffix:
-        name = f"{name}{suffix}"
+    # 3. optional file_name
+    if file_name:
+        output_name = f"{file_name}"
 
+    # 4. timestamp
     if add_timestamp:
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        name = f"{name}_{timestamp}"
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        output_name = f"{output_name}_{ts}"
 
-    # If we have an input extension, reuse it
-    ext = runtime.input_extension or ""
-
-    p = Path(base_dir) / f"{name}{ext}"
-    return str(p)
+    return str(Path(base_dir) / f"{output_name}")
