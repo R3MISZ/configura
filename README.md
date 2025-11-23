@@ -91,7 +91,7 @@ Design principles:
 Every step consumes data, transforms it, and outputs the result to the next step.
 This allows new adapters or plugins to be added without modifying the engine.
 
-<img src="docs/assets/flow.png" alt="Pipeline flow" width="600"/>
+<img src="docs/assets/flow.png" alt="Pipeline flow" width="500"/>
 
 ---
 
