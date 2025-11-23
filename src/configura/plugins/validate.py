@@ -1,7 +1,7 @@
 from jsonschema import Draft7Validator
 from jsonschema.exceptions import ValidationError
 
-from configura.constants import TYPE_DATA, DEFAULT_ENCODING, TYPE_ON_FAIL
+from configura.constants import TYPE_DATA, DEFAULT_ENCODING, TYPE_ON_FAIL, DEFAULT_ON_FAIL
 from configura.io import read_json, write_jsonl
 
 class Validate:
@@ -10,10 +10,10 @@ class Validate:
         schema_path: str,
         schema_encoding: str = DEFAULT_ENCODING,
 
-        on_fail: TYPE_ON_FAIL = "skip",
+        on_fail: TYPE_ON_FAIL = DEFAULT_ON_FAIL,
 
-        dlq_dir: str = "",
-        dlq_name: str = DEFAULT_ENCODING,
+        dlq_dir: str = "data/dlq/",
+        dlq_name: str = "dlq_output",
     ) -> None:
         self.schema_path = schema_path
         self.schema_encoding = schema_encoding
@@ -41,7 +41,7 @@ class Validate:
         schema_path: str,
         schema_encoding: str = DEFAULT_ENCODING,
 
-        on_fail: TYPE_ON_FAIL = "skip",
+        on_fail: TYPE_ON_FAIL = DEFAULT_ON_FAIL,
 
         dlq_dir: str = "data/dlq/",
         dlq_name: str = "dlq_output",

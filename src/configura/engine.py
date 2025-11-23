@@ -12,7 +12,7 @@ def run_pipeline_from_config(config_path: Path, verbose: bool = False) -> None:
     if not config_path.is_file():
         raise SystemExit(f"Config path is not a file: {config_path}")
 
-    if config_path.suffix in (".yaml" or ".yml"):
+    if config_path.suffix in (".yaml", ".yml"):
         config = read_yaml(str(config_path))
     elif config_path.suffix == ".json":
         config = read_json(str(config_path))
@@ -35,10 +35,8 @@ def run_pipeline_from_config(config_path: Path, verbose: bool = False) -> None:
 
     data = []
     for step in pipeline:
-        print(f"[DEBUG] step: {step}")
+        if verbose: print(f"[DEBUG] step: {step}")
         data = process_class(step, data)
-        #print(f"data: {data}")
-        #print("-")
 
     if verbose: print("[DONE] Pipeline finished")
 
